@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 public class MedicoService {
@@ -29,19 +28,23 @@ public class MedicoService {
 //        return repository.findAll().stream().map(MedicoShallowDTO::new).toList();
         return repository.findAllByAtivoTrue(paginacao).map(MedicoShallowDTO::new);
     }
+    public MedicoShallowDTO buscarMedico(Long id){
+        return  new MedicoShallowDTO(repository.findById(id).get());
+    }
 
-
-    public void atualizar(MedicoPutDTO medico) {
+    public Medico atualizar(MedicoPutDTO medico) {
         var entity = repository.getReferenceById(medico.id());
         entity.atualizarInformacoes(medico);
+        return entity;
     }
 
     public void deletar(Long id) {
         repository.deleteById(id);
     }
 
-    public void inativarMedico(Long id) {
+    public Medico inativarMedico(Long id) {
         var entity = repository.getReferenceById(id);
         entity.inativar();
+        return entity;
     }
 }

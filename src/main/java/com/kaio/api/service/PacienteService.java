@@ -1,8 +1,6 @@
 package com.kaio.api.service;
 
-import com.kaio.api.model.Medico;
 import com.kaio.api.model.Paciente;
-import com.kaio.api.model.dto.MedicoPutDTO;
 import com.kaio.api.model.dto.PacienteDTO;
 import com.kaio.api.model.dto.PacientePutDTO;
 import com.kaio.api.model.dto.shallow.PacienteShallowDTO;
@@ -28,12 +26,14 @@ public class PacienteService {
         return repository.findAll(pageable).map(PacienteShallowDTO::new);
     }
 
-    public void atualizar(PacientePutDTO paciente) {
+    public Paciente atualizar(PacientePutDTO paciente) {
         var entity = repository.getReferenceById(paciente.id());
         entity.atualizarInformacoes(paciente);
+        return entity;
     }
 
     public void deletar(Long id) {
         repository.deleteById(id);
+
     }
 }
